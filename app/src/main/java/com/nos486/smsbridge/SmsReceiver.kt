@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Telephony
 import android.util.Log
-import java.util.UUID
 import java.util.concurrent.Executors
 
 class SmsReceiver : BroadcastReceiver() {
@@ -35,10 +34,13 @@ class SmsReceiver : BroadcastReceiver() {
         val db = SmsDatabase.get(context)
         // One broadcast normally holds the parts of a single (possibly multipart) message,
         // but group by sender just in case a vendor batches several.
-        parts.groupBy { it.displayOriginatingAddress ?: it.originatingAddress ?: "unknown" }
+        parts.groupBy { it.originatingAddress ?: it.displayOriginatingAddress ?: "unknown" }
             .forEach { (sender, msgs) ->
                 val body = msgs.joinToString("") { it.displayMessageBody ?: it.messageBody ?: "" }
-                db.insert(UUID.randomUUID().toString(), sender, body, receivedAt, slot)
+                // Same id the inbox scanner would compute, so the two never double-send.
+                val id = InboxScanner.stableId(sender, msgs.first().timestampMillis, body)
+                if (db.exists(id)) return@forEach
+                db.insert(id, sender, body, receivedAt, slot)
                 Log.i(TAG, "Stored SMS from $sender (${body.length} chars, slot=$slot)")
             }
     }

@@ -64,6 +64,20 @@ class SmsDatabase private constructor(context: Context) :
         writableDatabase.insertWithOnConflict("messages", null, cv, SQLiteDatabase.CONFLICT_IGNORE)
     }
 
+    fun exists(id: String): Boolean =
+        readableDatabase.rawQuery("SELECT 1 FROM messages WHERE id = ? LIMIT 1", arrayOf(id)).use { it.moveToFirst() }
+
+    fun inTransaction(block: () -> Unit) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            block()
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
     /** True if an identical message (same sender + body) was already stored within [windowMs] of [receivedAt]. */
     fun existsSimilar(sender: String, body: String, receivedAt: Long, windowMs: Long): Boolean {
         readableDatabase.rawQuery(

@@ -3,6 +3,7 @@ package com.nos486.smsbridge
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -75,6 +76,9 @@ class MainActivity : Activity() {
                 runOnUiThread { toast("ارسال مجدد شروع شد ($n پیام ناموفق دوباره در صف)") }
             }
         }
+        findViewById<Button>(R.id.import1d).setOnClickListener { importOlder(1, "۲۴ ساعت") }
+        findViewById<Button>(R.id.import7d).setOnClickListener { importOlder(7, "۷ روز") }
+        findViewById<Button>(R.id.import30d).setOnClickListener { importOlder(30, "۳۰ روز") }
         findViewById<Button>(R.id.permissions).setOnClickListener { requestPermissionsIfNeeded() }
         findViewById<Button>(R.id.battery).setOnClickListener { requestBatteryExemption() }
         findViewById<Button>(R.id.appInfo).setOnClickListener {
@@ -133,6 +137,38 @@ class MainActivity : Activity() {
                 is SendResult.Retry -> "❌ خطا: ${r.reason}"
             }
             runOnUiThread { toast(msg, long = true) }
+        }
+    }
+
+    private fun importOlder(days: Int, label: String) {
+        if (!InboxScanner.hasPermission(this)) {
+            toast("ابتدا دسترسی خواندن پیامک را بدهید")
+            requestPermissionsIfNeeded()
+            return
+        }
+        if (!prefs.isConfigured) return toast("ابتدا آدرس سرور را وارد و ذخیره کنید")
+        val since = System.currentTimeMillis() - days * DateUtils.DAY_IN_MILLIS
+        io.execute {
+            val count = runCatching { InboxScanner.countNew(this, since) }.getOrDefault(0)
+            runOnUiThread {
+                if (isFinishing) return@runOnUiThread
+                if (count == 0) return@runOnUiThread toast("پیامک ارسال‌نشده‌ای در $label گذشته پیدا نشد")
+                AlertDialog.Builder(this)
+                    .setTitle("ارسال پیامک‌های قبلی")
+                    .setMessage("$count پیامک از $label گذشته پیدا شد. ارسال شوند؟")
+                    .setPositiveButton("ارسال") { _, _ ->
+                        io.execute {
+                            val added = runCatching { InboxScanner.importSince(this, since) }.getOrDefault(0)
+                            Scheduler.flushImmediately(this)
+                            runOnUiThread {
+                                toast("$added پیامک به صف ارسال اضافه شد")
+                                refresh()
+                            }
+                        }
+                    }
+                    .setNegativeButton("انصراف", null)
+                    .show()
+            }
         }
     }
 

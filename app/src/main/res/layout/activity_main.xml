@@ -92,6 +92,41 @@
             android:layout_height="wrap_content"
             android:text="ارسال مجدد همه (ناموفق‌ها و در صف)" />
 
+        <TextView style="@style/Label" android:text="ارسال پیامک‌های قبلی" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="پیامک‌های صندوق دریافت که هنوز ارسال نشده‌اند فرستاده می‌شوند (تکراری‌ها رد می‌شوند)."
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/import1d"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="۲۴ ساعت" />
+
+            <Button
+                android:id="@+id/import7d"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="۷ روز" />
+
+            <Button
+                android:id="@+id/import30d"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="۳۰ روز" />
+        </LinearLayout>
+
         <TextView style="@style/Label" android:text="تنظیمات پایداری" />
 
         <Button
