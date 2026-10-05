@@ -36,7 +36,7 @@
             android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="http://alerthub.geekio.org/api/v1/sms"
+            android:hint="http://alerthub-api.geekio.org:8000/api/v1/sms"
             android:inputType="textUri"
             android:textDirection="ltr" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/token"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="eyJhbGciOi…"
+            android:hint="ah_…"
             android:inputType="textNoSuggestions|textVisiblePassword"
             android:maxLines="3"
             android:textDirection="ltr" />

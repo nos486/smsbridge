@@ -5,9 +5,9 @@
 ## خروجی (POST)
 
 ```http
-POST <URL>
-Content-Type: application/json
-Authorization: Bearer <token>        (اگر توکن وارد شده باشد)
+POST http://alerthub-api.geekio.org:8000/api/v1/sms
+Content-Type: application/json; charset=utf-8
+Authorization: Bearer ah_<CLIENT_KEY>   (اگر کلید وارد شده باشد)
 Idempotency-Key: <id>
 ```
 
@@ -16,7 +16,7 @@ Idempotency-Key: <id>
   "id": "550e8400-e29b-41d4-a716-446655440000",
   "sender": "+989123456789",
   "message": "بانک ملت: واریز مبلغ ۵,۰۰۰,۰۰۰ ریال. مانده: ۲۵,۰۰۰,۰۰۰ ریال",
-  "received_at": "2026-10-05T12:34:56.000+03:30",
+  "received_at": "2026-10-05T09:04:56.000Z",
   "sim_slot": 0,
   "device_id": "unique-device-identifier",
   "device_name": "Google Pixel 8"
@@ -55,7 +55,7 @@ Idempotency-Key: <id>
 ## نصب و تنظیم
 
 1. APK را از تب **Actions** (artifact با نام `smsbridge-apk`) بگیرید یا خودتان بسازید: `./gradlew assembleRelease`
-2. در برنامه آدرس API (مثلاً `http://alerthub.geekio.org/api/v1/sms`) و در صورت نیاز توکن را وارد و ذخیره کنید.
+2. در برنامه آدرس API (مثلاً `http://alerthub-api.geekio.org:8000/api/v1/sms`) و در صورت نیاز توکن را وارد و ذخیره کنید.
 3. دکمه‌ی «ارسال پیامک آزمایشی» را بزنید.
 4. دسترسی‌ها را بدهید و **بهینه‌سازی باتری** را غیرفعال کنید.
 5. روی گوشی‌های شیائومی/هواوی/اوپو/ویوو/سامسونگ در تنظیمات برنامه **Autostart** را روشن و
@@ -63,5 +63,5 @@ Idempotency-Key: <id>
 6. اندروید ۱۳+ برای APKهای نصب‌شده خارج از Play، دسترسی پیامک «Restricted» است: اگر دکمه‌ی دسترسی
    خاکستری بود، در App info از منوی ⋮ گزینه‌ی **Allow restricted settings** را بزنید.
 
-> توکن JWT نمونه زمان انقضا دارد (`exp`)؛ بهتر است برای دستگاه یک توکن بلندمدت روی سرور بسازید.
-> وقتی توکن منقضی شود (401) پیام‌ها در صف می‌مانند و بعد از وارد کردن توکن جدید ارسال می‌شوند.
+> پاسخ موفق سرور: `{"status":"ok","id":"...","duplicate":false}` — پیام تکراری هم (`duplicate: true`) موفق حساب می‌شود.
+> اگر کلید نامعتبر/باطل شود (401/403) پیام‌ها در صف می‌مانند و بعد از وارد کردن کلید جدید ارسال می‌شوند.
