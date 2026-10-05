@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F1F5F9"
+            android:padding="12dp"
+            android:textIsSelectable="true"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/warnings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="#FFF4E5"
+            android:padding="12dp"
+            android:textColor="#8A4B00"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView style="@style/Label" android:text="آدرس API (URL)" />
+
+        <EditText
+            android:id="@+id/url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="http://alerthub.geekio.org/api/v1/sms"
+            android:inputType="textUri"
+            android:textDirection="ltr" />
+
+        <TextView style="@style/Label" android:text="توکن (Bearer) — اختیاری" />
+
+        <EditText
+            android:id="@+id/token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="eyJhbGciOi…"
+            android:inputType="textNoSuggestions|textVisiblePassword"
+            android:maxLines="3"
+            android:textDirection="ltr" />
+
+        <TextView style="@style/Label" android:text="نام دستگاه" />
+
+        <EditText
+            android:id="@+id/deviceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <CheckBox
+            android:id="@+id/insecure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="پذیرش گواهی SSL نامعتبر (مثل curl --insecure)" />
+
+        <Switch
+            android:id="@+id/enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="ارسال فعال باشد" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="ذخیره" />
+
+        <Button
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ارسال پیامک آزمایشی" />
+
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ارسال مجدد همه (ناموفق‌ها و در صف)" />
+
+        <TextView style="@style/Label" android:text="تنظیمات پایداری" />
+
+        <Button
+            android:id="@+id/permissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="دادن دسترسی‌ها" />
+
+        <Button
+            android:id="@+id/battery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="غیرفعال کردن بهینه‌سازی باتری" />
+
+        <Button
+            android:id="@+id/appInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تنظیمات برنامه (Autostart / Restricted settings)" />
+
+        <TextView style="@style/Label" android:text="آخرین پیامک‌ها" />
+
+        <TextView
+            android:id="@+id/recent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"
+            android:textSize="13sp" />
+    </LinearLayout>
+</ScrollView>
